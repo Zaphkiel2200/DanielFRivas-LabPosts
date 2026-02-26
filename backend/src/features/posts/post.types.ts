@@ -4,3 +4,9 @@ export interface Post {
   title: string;
   description: string;
 }
+
+export interface CreatePostDTO {
+  imageUrl: string;
+  title: string;
+  description: string;
+}
