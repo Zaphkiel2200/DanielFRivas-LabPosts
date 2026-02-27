@@ -1,8 +1,4 @@
-interface Post {
-    id?: number;
-    title: string;
-    content: string;
-}
+import type { Post } from '../types';
 
 interface PostListProps {
     posts: Post[];
@@ -16,8 +12,9 @@ export const PostList = ({ posts }: PostListProps) => {
             ) : (
                 posts.map((post, index) => (
                     <div key={post.id || index} className="post-card">
+                        {post.imageUrl && <img src={post.imageUrl} alt={post.title} style={{ width: '100%', borderRadius: '8px' }} />}
                         <h3>{post.title}</h3>
-                        <p>{post.content}</p>
+                        <p>{post.description}</p>
                     </div>
                 ))
             )}

@@ -1,19 +1,21 @@
 import { useState } from 'react';
 
 interface PostFormProps {
-  onSubmit: (title: string, content: string) => void;
+  onSubmit: (title: string, description: string, imageUrl: string) => void;
 }
 
 export const PostForm = ({ onSubmit }: PostFormProps) => {
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !content) return;
-    onSubmit(title, content);
+    if (!title || !description || !imageUrl) return;
+    onSubmit(title, description, imageUrl);
     setTitle('');
-    setContent('');
+    setDescription('');
+    setImageUrl('');
   };
 
   return (
@@ -24,10 +26,16 @@ export const PostForm = ({ onSubmit }: PostFormProps) => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      <input
+        type="text"
+        placeholder="URL de la imagen"
+        value={imageUrl}
+        onChange={(e) => setImageUrl(e.target.value)}
+      />
       <textarea
-        placeholder="Contenido..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        placeholder="Descripción..."
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         rows={4}
       />
       <button type="submit">Publicar Post</button>
