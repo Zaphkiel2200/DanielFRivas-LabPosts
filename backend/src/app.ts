@@ -14,6 +14,10 @@ const postService = new PostService();
 const postController = new PostController(postService);
 const postRouter = new PostRouter(postController);
 
+app.get('/', (req, res) => {
+    res.send('API is running...');
+});
+
 app.use('/api', postRouter.router);
 
 app.use(errorsMiddleware);

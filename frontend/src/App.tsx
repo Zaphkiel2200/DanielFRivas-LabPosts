@@ -5,7 +5,7 @@ import './App.css';
 
 import type { Post } from './types';
 
-const API_URL = '/api/posts'; // Using relative path or env variable is better
+const API_URL = 'https://daniel-f-rivas-lab-posts.vercel.app/api/posts';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
