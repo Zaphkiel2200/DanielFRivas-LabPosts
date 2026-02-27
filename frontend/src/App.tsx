@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { PostForm } from './components/PostForm';
+import { PostList } from './components/PostList';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Post {
+  id?: number;
+  title: string;
+  content: string;
 }
 
-export default App
+const API_URL = 'https://daniel-f-rivas-lab-posts.vercel.app/api/posts';
+
+function App() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  const handleAddPost = async (title: string, content: string) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content }),
+      });
+      if (response.ok) {
+        fetchPosts(); // Refresh list after adding
+      }
+    } catch (error) {
+      console.error('Error adding post:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  return (
+    <div className="app-container">
+      <h1>Lab Posts</h1>
+      <PostForm onSubmit={handleAddPost} />
+      <PostList posts={posts} />
+    </div>
+  );
+}
+
+export default App;
+
